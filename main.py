@@ -172,27 +172,33 @@ except Exception as e:
     st.stop()
 
 
+
 # --------------------------------------------------
 # 요약 정보
 # --------------------------------------------------
+
+# 하루별 메뉴 종류 수
+daily_menu_counts = [len(basket) for basket in baskets]
+
+# 하루 평균 메뉴 종류 수
+avg_menu_count = sum(daily_menu_counts) / len(daily_menu_counts)
+
 st.subheader("📊 분석 요약")
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 
-col1.metric(
-    "급식 일수",
-    f"{total_days:,}일"
+col1.metric("급식 일수", f"{total_days:,}일")
+col2.metric("메뉴 종류 수", f"{menu_count:,}개")
+col3.metric("함께 나온 메뉴 쌍", f"{pair_total:,}쌍")
+col4.metric("하루 평균 메뉴", f"{avg_menu_count:.2f}종")
+
+st.caption(
+    f"하루 메뉴 수 범위: "
+    f"{min(daily_menu_counts)}종 ~ {max(daily_menu_counts)}종"
 )
 
-col2.metric(
-    "메뉴 종류 수",
-    f"{menu_count:,}개"
-)
+st.divider()
 
-col3.metric(
-    "함께 나온 메뉴 쌍",
-    f"{pair_total:,}쌍"
-)
 
 st.divider()
 
@@ -544,15 +550,4 @@ with st.expander("📖 분석 지표 설명"):
     **참고:** 한 쌍의 두 방향 규칙은 지지도와 동시 횟수는 같지만,
     신뢰도와 향상도는 서로 다를 수 있습니다.
     """)
-    # 하루별 메뉴 종류 수
-daily_menu_counts = [len(basket) for basket in baskets]
 
-# 하루 평균 메뉴 종류 수
-avg_menu_count = sum(daily_menu_counts) / len(daily_menu_counts)
-
-col1, col2, col3, col4 = st.columns(4)
-
-col1.metric("급식 일수", f"{total_days:,}일")
-col2.metric("메뉴 종류 수", f"{menu_count:,}개")
-col3.metric("함께 나온 메뉴 쌍", f"{pair_total:,}쌍")
-col4.metric("하루 평균 메뉴", f"{avg_menu_count:.2f}종")
